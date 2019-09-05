@@ -1,0 +1,31 @@
+## Volankey
+
+### 1.2019年09月04日遇见一个bug
+```javasctipt
+  <n-advance-table
+      ref="table"
+      :columns="columns"
+      :data="data"
+      :loading="loading"
+      @on-page-change="onPageChange"
+      :pagination="{total:data.length,limit:10}"
+      >
+     <n-button
+      slot="table-operation-search-right"
+      style="margin-left:12px;margin-bottom:8px;"
+      round
+      size="small"
+      @click="openCreateArea"
+      >{{ $t("New Type") }}</n-button
+    >
+  </n-advance-table>
+   <Input
+    v-model="newServiceTypeName"
+    :placeholder="$t('Service type name, initial letter suggested uppercase')"
+  />
+```
+组件props外部直接传入一个对象,组件内部使用computed计算某个属性的时候依赖了这个prop,当父元素刷新的时候(兄弟组件input,绑定v-model输入文字),会触发组件内部的computed计算
+
+原因:v-model更新,同时会触发重新渲染组件,这时table组件computed中依赖了pagination,那么pagination必然会返回一个新的对象,触发相关依赖的computed
+### Flutter占位图片FadeinImage还是会有空白
+#### 原因有待调查
